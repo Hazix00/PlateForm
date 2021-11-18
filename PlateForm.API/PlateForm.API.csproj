@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PlateForm.Core\PlateForm.Core.csproj" />
+    <ProjectReference Include="..\PlateForm.DataStore.EF\PlateForm.DataStore.EF.csproj" />
   </ItemGroup>
 
 </Project>

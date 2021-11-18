@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using PlateForm.API.Filters;
 using PlateForm.Core.Models;
 
 namespace PlateForm.API.Controllers
