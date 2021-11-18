@@ -63,7 +63,7 @@ namespace PlateForm.API.Controllers
         {
             db.Projects.Add(project);
             db.SaveChanges();
-            return CreatedAtAction(nameof(Get), project.ProjectId);
+            return CreatedAtAction(nameof(Get), new { id = project.ProjectId }, project);
         }
         /// <summary>
         /// Update Project

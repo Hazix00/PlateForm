@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
 using PlateForm.DataStore.EF;
 
@@ -48,18 +49,34 @@ namespace PlateForm.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Ticket ticket)
         {
-            var result = new { Response = ticket };
-            return Ok(result);
+            db.Tickets.Add(ticket);
+            db.SaveChanges();
+            return CreatedAtAction(nameof(Get), new { id = ticket.TicketId}, ticket);
         }
         /// <summary>
         /// Update Ticket
         /// </summary>
         /// <returns></returns>
-        [HttpPut]
-        public IActionResult Put([FromBody] Ticket ticket)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Ticket ticket)
         {
-            var result = new { Response = ticket };
-            return Ok(result);
+            if (id != ticket.TicketId) return BadRequest();
+
+            db.Entry(ticket).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+                if (db.Tickets.Find(id) == null)
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+
+            return NoContent();
         }
         /// <summary>
         /// Delete Ticket
@@ -69,8 +86,15 @@ namespace PlateForm.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = new { Response = $"Delete Ticket Id = {id}" };
-            return Ok(result);
+            var project = db.Tickets.Find(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+            db.Tickets.Remove(project);
+            db.SaveChanges();
+
+            return Ok(project);
         }
     }
 }
