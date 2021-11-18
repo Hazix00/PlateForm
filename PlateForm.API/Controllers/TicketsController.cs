@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PlateForm.Core.Models;
+using PlateForm.DataStore.EF;
 
 namespace PlateForm.API.Controllers
 {
@@ -8,16 +10,20 @@ namespace PlateForm.API.Controllers
     [Route("api/tickets")]
     public class TicketsController : Controller
     {
+        private readonly BugsContext db;
+
+        public TicketsController(BugsContext db)
+        {
+            this.db = db;
+        }
         /// <summary>
         /// Get all Tickets
         /// </summary>
         /// <returns>List of Tickets</returns>
         [HttpGet]
-        public object Get()
+        public IEnumerable<Ticket> Get()
         {
-            return new { Response = new List<Ticket>() { 
-                new Ticket() { TicketId = 1, ProjectId = 1, Title = "Hello" , Description = "this is a ticket"}
-            } };
+            return db.Tickets;
         }
         /// <summary>
         /// Return Ticket by Id
@@ -25,10 +31,16 @@ namespace PlateForm.API.Controllers
         /// <param name="id"></param>
         /// <returns>Ticket</returns>
         [HttpGet("{id}")]
-        public object Get(int id)
+        public IActionResult Get(int id)
         {
-            return new { Response = $"Hello from api Id = {id}" };
+            var ticket = db.Tickets.SingleOrDefault(t => t.TicketId == id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+            return Ok(ticket);
         }
+        
         /// <summary>
         /// Add new Ticket
         /// </summary>
