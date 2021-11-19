@@ -71,5 +71,6 @@ namespace PlateForm.Core.Models
 
             return DueDate.Value.Date >= ReportDate.Value.Date;
         }
+        public bool ValidateDescription() => !string.IsNullOrEmpty(Description);
     }
 }

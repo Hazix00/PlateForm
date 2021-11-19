@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
 using PlateForm.DataStore.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PlateForm.API.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("api/Projects")]
     public class ProjectsController : Controller
