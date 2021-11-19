@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
@@ -22,9 +24,10 @@ namespace PlateForm.API.Controllers
         /// </summary>
         /// <returns>List of Tickets</returns>
         [HttpGet]
-        public IEnumerable<Ticket> Get()
+        public async Task<IList<Ticket>> GetAsync()
         {
-            return db.Tickets;
+            var tickets = await db.Tickets.ToListAsync();
+            return tickets; 
         }
         /// <summary>
         /// Return Ticket by Id
@@ -32,9 +35,9 @@ namespace PlateForm.API.Controllers
         /// <param name="id"></param>
         /// <returns>Ticket</returns>
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            var ticket = db.Tickets.SingleOrDefault(t => t.TicketId == id);
+            var ticket = await db.Tickets.SingleOrDefaultAsync(t => t.TicketId == id);
             if (ticket == null)
             {
                 return NotFound();
@@ -47,29 +50,30 @@ namespace PlateForm.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post([FromBody] Ticket ticket)
+        public async Task<IActionResult> Post([FromBody] Ticket ticket)
         {
             db.Tickets.Add(ticket);
-            db.SaveChanges();
-            return CreatedAtAction(nameof(Get), new { id = ticket.TicketId}, ticket);
+            await db.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAsync).Replace("Async",""), new { id = ticket.TicketId}, ticket);
         }
         /// <summary>
         /// Update Ticket
         /// </summary>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Ticket ticket)
+        public async Task<IActionResult> Put(int id, [FromBody] Ticket ticket)
         {
             if (id != ticket.TicketId) return BadRequest();
 
             db.Entry(ticket).State = EntityState.Modified;
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
-            catch (System.Exception)
+            catch(Exception ex)
             {
-                if (db.Tickets.Find(id) == null)
+                var existingTicket = await db.Tickets.FindAsync(id);
+                if (existingTicket == null || ex.GetType() == typeof(DbUpdateConcurrencyException))
                 {
                     return NotFound();
                 }
@@ -84,15 +88,15 @@ namespace PlateForm.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var project = db.Tickets.Find(id);
+            var project = await db.Tickets.FindAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
             db.Tickets.Remove(project);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(project);
         }

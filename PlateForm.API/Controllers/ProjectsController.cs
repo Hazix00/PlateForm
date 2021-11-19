@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
 using PlateForm.DataStore.EF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlateForm.API.Controllers
 {
@@ -22,9 +24,9 @@ namespace PlateForm.API.Controllers
         /// </summary>
         /// <returns>List of Projects</returns>
         [HttpGet]
-        public IEnumerable<Project> Get()
+        public async Task<IList<Project>> GetAsync()
         {
-           return db.Projects;
+           return await db.Projects.ToListAsync();
         }
         /// <summary>
         /// Return Project by Id
@@ -32,9 +34,9 @@ namespace PlateForm.API.Controllers
         /// <param name="id"></param>
         /// <returns>Project</returns>
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            var project = db.Projects.SingleOrDefault(p => p.ProjectId == id);
+            var project = await db.Projects.SingleOrDefaultAsync(p => p.ProjectId == id);
             if (project == null) return NotFound();
             return Ok(project);
         }
@@ -45,10 +47,11 @@ namespace PlateForm.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("/api/projects/{pid}/tickets")]
-        public IActionResult GetProjectTickets(int pid)
+        public async Task<IActionResult> GetProjectTicketsAsync(int pid)
         {
-            var tickets = db.Projects.SingleOrDefault(t => t.ProjectId == pid)?.Tickets;
-            if (tickets == null || tickets.Count() <= 0)
+            var project = await db.Projects.SingleOrDefaultAsync(t => t.ProjectId == pid);
+            var tickets = project?.Tickets;
+            if (tickets == null || tickets.Count <= 0)
             {
                 return NotFound();
             }
@@ -59,29 +62,30 @@ namespace PlateForm.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post([FromBody] Project project)
+        public async Task<IActionResult> PostAsync([FromBody] Project project)
         {
             db.Projects.Add(project);
-            db.SaveChanges();
-            return CreatedAtAction(nameof(Get), new { id = project.ProjectId }, project);
+            await db.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetAsync).Replace("Async",""), new { id = project.ProjectId }, project);
         }
         /// <summary>
         /// Update Project
         /// </summary>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public IActionResult Put( int id, [FromBody] Project project)
+        public async Task<IActionResult> PutAsync( int id, [FromBody] Project project)
         {
             if (id != project.ProjectId) return BadRequest();
 
             db.Entry(project).State = EntityState.Modified;
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-                if (db.Projects.Find(id) == null)
+                var existingProject = await db.Projects.FindAsync(id);
+                if (existingProject == null || ex.GetType() == typeof(DbUpdateConcurrencyException))
                 {
                     return NotFound();
                 }
@@ -96,15 +100,15 @@ namespace PlateForm.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var project = db.Projects.Find(id);
+            var project = await db.Projects.FindAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
             db.Projects.Remove(project);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(project); 
         }
