@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using PlateForm.DataStore.EF;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,15 @@ namespace PlateForm.API
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
             });
+
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+            services.AddSwaggerGen(options =>
+            {
+                for (int i = 1; i <= 2; i++)
+                {
+                    options.SwaggerDoc($"v{i}", new OpenApiInfo { Title = $"My Web API v{i}", Version = $"version {i}" });
+                }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,9 +59,18 @@ namespace PlateForm.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+                // Create in-memory database for dev envirement
                 bugsContext.Database.EnsureDeleted();
                 bugsContext.Database.EnsureCreated();
+                //Configure OpenApi
+                app.UseSwagger();
+                app.UseSwaggerUI(options =>
+                {
+                    for (int i = 1; i <= 2; i++)
+                    {
+                        options.SwaggerEndpoint($"/swagger/v{i}/swagger.json", $"WebApi v{i}");
+                    }
+                });
             }
 
             app.UseRouting();

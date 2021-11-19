@@ -23,7 +23,7 @@ namespace PlatformDemo.Controllers.V2
         }
 
 
-        [HttpGet]        
+        [HttpGet]
         public async Task<IActionResult> Get()
         {           
             return Ok(await db.Tickets.ToListAsync());
