@@ -4,21 +4,14 @@
 <br />
 @if (projects != null)
 {
-    <table class="table">
-      <thead>
-        <tr>
-            <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-          @foreach (Project project in projects)
+    <ul>
+         @foreach (Project project in projects)
          {
-            <tr>
-                <td>@project.Name</td>
-            </tr> 
+            <li>
+                <NavLink href=@($"/project/{project.ProjectId}/tickets")>@project.Name</NavLink>
+            </li> 
          }
-      </tbody>
-    </table>
+    </ul>
 }
 
 @code {

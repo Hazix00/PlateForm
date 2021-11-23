@@ -21,7 +21,9 @@ namespace PlateForm.WEB
             builder.RootComponents.Add<App>("#app");
             
             builder.Services.AddTransient<IProjectsScreenUseCases, ProjectsScreenUseCases>();
+            builder.Services.AddTransient<ITicketsScreenUseCases, TicketsScreenUseCases>();
             builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
+            builder.Services.AddTransient<ITicketRepository, TicketRepository>();
 
             builder.Services.AddSingleton<IWebApiExecuter>( new WebApiExecuter("https://localhost:44378", new HttpClient()) );
 

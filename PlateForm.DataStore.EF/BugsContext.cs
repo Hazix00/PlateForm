@@ -28,8 +28,8 @@ namespace PlateForm.DataStore.EF
                 );
 
             modelBuilder.Entity<Ticket>().HasData(
-                    new Ticket { TicketId = 1, Title = "Bug #1", ProjectId = 1 },
-                    new Ticket { TicketId = 2, Title = "Bug #2", ProjectId = 1 },
+                    new Ticket { TicketId = 1, Title = "Bug #1", ProjectId = 1, DueDate = new DateTime(2021,10,17), ReportDate = new DateTime(2021, 10, 10) },
+                    new Ticket { TicketId = 2, Title = "Bug #2", ProjectId = 1, Description = "This is the bug number 2" },
                     new Ticket { TicketId = 3, Title = "Bug #3", ProjectId = 2 }
                 );
         }
