@@ -1,10 +1,24 @@
 ﻿@page "/tickets"
 @page "/project/{projectId:int}/tickets"
+@using System.Text
+@using System.Threading
 
 @inject ITicketsScreenUseCases ticketsScreenUseCases
 
 <h3>@(projectId != null ? $"Project {projectId} Tasks" : "Tickets")</h3>
 
+<br />
+<div class="row">
+    <div class="offset-4 col-auto">
+        <div class="input-group">
+            <input class="form-control" type="text" placeholder="Search"
+                aria-label="Search" @oninput="Search">
+            <button type="button" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
 <br />
 @if (tickets != null)
 {
@@ -22,8 +36,8 @@
           @foreach (Ticket ticket in tickets)
          {
             <tr>
-                <td>@ticket.Owner</td>
                 <td>@ticket.Title</td>
+                <td>@ticket.Owner</td>
                 <td>@ticket.Description</td>
                 <td>@ticket.ReportDate</td>
                 <td>@ticket.DueDate</td>
@@ -36,11 +50,28 @@
 @code {
     [Parameter]
     public int? projectId { get; set; }
+    public CancellationTokenSource cancelToken = new();
 
     IEnumerable<Ticket> tickets;
     protected override async Task OnInitializedAsync()
     {
         tickets = await ticketsScreenUseCases.ViewTicketsAsync((int)projectId); 
+    }
+
+    async Task Search(ChangeEventArgs eventArgs)
+    {
+        var filter = eventArgs.Value.ToString();
+        cancelToken.Cancel();
+
+        if (string.IsNullOrEmpty(filter))
+        {
+            tickets = await ticketsScreenUseCases.ViewTicketsAsync((int)projectId); 
+            return;
+        }
+        cancelToken = new();
+
+        await Task.Delay(700, cancelToken.Token);
+        tickets = await ticketsScreenUseCases.SearchTicketsAsync(filter);
     }
 
 }

@@ -7,6 +7,7 @@ using PlateForm.DataStore.EF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlateForm.API.Filters.V2;
+using PlateForm.API.QueryFilters;
 
 namespace PlatformDemo.Controllers.V2
 {
@@ -24,9 +25,24 @@ namespace PlatformDemo.Controllers.V2
 
 
         [HttpGet]
-        public async Task<IActionResult> Get()
-        {           
-            return Ok(await db.Tickets.ToListAsync());
+        public async Task<IActionResult> Get([FromQuery] TicketQueryFilter ticketQueryFilter)
+        {
+            IQueryable<Ticket> tickets = db.Tickets;
+
+            if (ticketQueryFilter != null)
+            {
+                if (ticketQueryFilter.Id.HasValue)
+                    tickets = tickets.Where(x => x.TicketId == ticketQueryFilter.Id);
+
+                if (!string.IsNullOrWhiteSpace(ticketQueryFilter.TitleOrDescription))
+                    tickets = tickets.Where(x => x.Title.Contains(ticketQueryFilter.TitleOrDescription,
+                       StringComparison.OrdinalIgnoreCase) ||
+                       x.Description.Contains(ticketQueryFilter.TitleOrDescription,
+                       StringComparison.OrdinalIgnoreCase));
+            }
+
+
+            return Ok(await tickets.ToListAsync());
         }
 
         [HttpGet("{id}")]        
