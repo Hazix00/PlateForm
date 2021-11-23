@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.Testing.Console",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.ApplicationLogic", "PlateForm.ApplicationLogic\PlateForm.ApplicationLogic.csproj", "{6AB0B969-5175-48C5-B9A1-87C60889C247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateForm.WEB", "PlateForm.WEB\PlateForm.WEB.csproj", "{0081ECC2-2CD7-4BEC-A406-EDFD8C8A7751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.WEB", "PlateForm.WEB\PlateForm.WEB.csproj", "{0081ECC2-2CD7-4BEC-A406-EDFD8C8A7751}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

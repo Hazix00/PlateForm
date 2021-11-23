@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PlateForm.ApplicationLogic\PlateForm.ApplicationLogic.csproj" />
     <ProjectReference Include="..\PlateForm.Core\PlateForm.Core.csproj" />
+    <ProjectReference Include="..\PlateForm.Repository\PlateForm.Repository.csproj" />
   </ItemGroup>
 
 </Project>

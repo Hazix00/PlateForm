@@ -7,7 +7,7 @@ using PlateForm.Core.Models;
 
 namespace PlateForm.ApplicationLogic
 {
-    public class ProjectsScreenUseCases
+    public class ProjectsScreenUseCases : IProjectsScreenUseCases
     {
         private readonly IProjectRepository projectRepository;
 

@@ -51,6 +51,15 @@ namespace PlateForm.API
                     options.SwaggerDoc($"v{i}", new OpenApiInfo { Title = $"My Web API v{i}", Version = $"version {i}" });
                 }
             });
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("https://localhost:44395")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +83,8 @@ namespace PlateForm.API
             }
 
             app.UseRouting();
+            
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

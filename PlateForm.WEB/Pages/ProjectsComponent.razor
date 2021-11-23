@@ -1,7 +1,30 @@
-﻿@page "/"
+﻿@inject IProjectsScreenUseCases projectsScreenUseCases
 
-
+<h3>Projects</h3>
+<br />
+@if (projects != null)
+{
+    <table class="table">
+      <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+          @foreach (Project project in projects)
+         {
+            <tr>
+                <td>@project.Name</td>
+            </tr> 
+         }
+      </tbody>
+    </table>
+}
 
 @code {
-
+    IEnumerable<Project> projects;
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await projectsScreenUseCases.ViewProjectsAsync(); 
+    }
 }
