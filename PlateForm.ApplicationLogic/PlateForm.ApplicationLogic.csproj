@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.Repository\App.Repository.csproj" />
+    <ProjectReference Include="..\PlateForm.Repository\PlateForm.Repository.csproj" />
     <ProjectReference Include="..\PlateForm.Core\PlateForm.Core.csproj" />
   </ItemGroup>
 

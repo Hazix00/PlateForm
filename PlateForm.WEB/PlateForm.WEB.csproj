@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\App.ApplicationLogic\App.ApplicationLogic.csproj" />
+    <ProjectReference Include="..\PlateForm.ApplicationLogic\PlateForm.ApplicationLogic.csproj" />
     <ProjectReference Include="..\PlateForm.Core\PlateForm.Core.csproj" />
   </ItemGroup>
 

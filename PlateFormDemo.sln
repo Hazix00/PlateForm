@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.Core", "PlateForm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.DataStore.EF", "PlateForm.DataStore.EF\PlateForm.DataStore.EF.csproj", "{91B989E9-F636-460E-A8EB-52201232D463}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Repository", "App.Repository\App.Repository.csproj", "{8B0FDF48-565A-49CC-A15F-FEB9FD7C0D97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.Repository", "PlateForm.Repository\PlateForm.Repository.csproj", "{8B0FDF48-565A-49CC-A15F-FEB9FD7C0D97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Testing.Console", "App.Testing.Console\App.Testing.Console.csproj", "{27E7F06E-58C1-41D7-8F46-EE52B67D1D2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.Testing.Console", "PlateForm.Testing.Console\PlateForm.Testing.Console.csproj", "{27E7F06E-58C1-41D7-8F46-EE52B67D1D2D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.ApplicationLogic", "App.ApplicationLogic\App.ApplicationLogic.csproj", "{6AB0B969-5175-48C5-B9A1-87C60889C247}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlateForm.ApplicationLogic", "PlateForm.ApplicationLogic\PlateForm.ApplicationLogic.csproj", "{6AB0B969-5175-48C5-B9A1-87C60889C247}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlateForm.WEB", "PlateForm.WEB\PlateForm.WEB.csproj", "{0081ECC2-2CD7-4BEC-A406-EDFD8C8A7751}"
 EndProject

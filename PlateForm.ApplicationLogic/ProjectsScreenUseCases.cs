@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Repository;
+using PlateForm.Repository;
 using PlateForm.Core.Models;
 
-namespace App.ApplicationLogic
+namespace PlateForm.ApplicationLogic
 {
     public class ProjectsScreenUseCases
     {

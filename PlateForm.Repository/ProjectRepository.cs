@@ -1,4 +1,4 @@
-﻿using App.Repository.ApiClient;
+﻿using PlateForm.Repository.ApiClient;
 using PlateForm.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Repository
+namespace PlateForm.Repository
 {
     public class ProjectRepository
     {

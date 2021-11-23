@@ -50,8 +50,7 @@ namespace PlateForm.API.Controllers
         [Route("/api/projects/{pid}/tickets")]
         public async Task<IActionResult> GetProjectTicketsAsync(int pid)
         {
-            var project = await db.Projects.SingleOrDefaultAsync(t => t.ProjectId == pid);
-            var tickets = project?.Tickets;
+            var tickets = await db.Tickets.Where(t => t.ProjectId == pid).ToListAsync();
             if (tickets == null || tickets.Count <= 0)
             {
                 return NotFound();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace App.Repository
+namespace PlateForm.Repository
 {
     public interface IProjectRepository
     {

@@ -1,5 +1,5 @@
-﻿using App.Repository;
-using App.Repository.ApiClient;
+﻿using PlateForm.Repository;
+using PlateForm.Repository.ApiClient;
 using PlateForm.Core.Models;
 using System;
 using System.Net.Http;
@@ -20,9 +20,9 @@ async Task TestProjects()
     Console.WriteLine("Reading projects...");
     await GetProjects();
 
-    //Console.WriteLine("////////////////////");
-    //Console.WriteLine("Reading project tickets...");
-    //await GetProjectTickets(1);
+    Console.WriteLine("////////////////////");
+    Console.WriteLine("Reading project tickets...");
+    await GetProjectTickets(1);
 
     Console.WriteLine("////////////////////");
     Console.WriteLine("Create a project...");

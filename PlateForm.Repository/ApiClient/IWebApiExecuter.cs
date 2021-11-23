@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace App.Repository.ApiClient
+namespace PlateForm.Repository.ApiClient
 {
     public interface IWebApiExecuter
     {
