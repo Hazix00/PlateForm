@@ -1,17 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using PlateForm.DataStore.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PlateForm.API
 {
@@ -35,13 +29,13 @@ namespace PlateForm.API
                 });
             }
             services.AddControllers();
-            services.AddApiVersioning( options =>
-            {
-                options.ReportApiVersions = true;
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                //options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
-            });
+            services.AddApiVersioning(options =>
+           {
+               options.ReportApiVersions = true;
+               options.AssumeDefaultVersionWhenUnspecified = true;
+               options.DefaultApiVersion = new ApiVersion(1, 0);
+               //options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+           });
 
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
             services.AddSwaggerGen(options =>
@@ -83,7 +77,7 @@ namespace PlateForm.API
             }
 
             app.UseRouting();
-            
+
             app.UseCors();
 
             app.UseEndpoints(endpoints =>

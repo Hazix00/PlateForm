@@ -1,6 +1,6 @@
-﻿using PlateForm.Repository;
+﻿using PlateForm.Core.Models;
+using PlateForm.Repository;
 using PlateForm.Repository.ApiClient;
-using PlateForm.Core.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;

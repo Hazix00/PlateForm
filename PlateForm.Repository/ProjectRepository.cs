@@ -1,9 +1,6 @@
-﻿using PlateForm.Repository.ApiClient;
-using PlateForm.Core.Models;
-using System;
+﻿using PlateForm.Core.Models;
+using PlateForm.Repository.ApiClient;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PlateForm.Repository
@@ -27,9 +24,14 @@ namespace PlateForm.Repository
             return await webApiExecuter.InvokeGet<Project>($"api/projects/{id}");
         }
 
-        public async Task<IEnumerable<Ticket>> GetProjectTicketsAsync(int projectId)
+        public async Task<IEnumerable<Ticket>> GetProjectTicketsAsync(int projectId, string filter = null)
         {
-            return await webApiExecuter.InvokeGet<IEnumerable<Ticket>>($"api/projects/{projectId}/tickets");
+            string uri = $"api/projects/{projectId}/tickets";
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                uri += $"?api-version=2.0&owner={filter}";
+            }
+            return await webApiExecuter.InvokeGet<IEnumerable<Ticket>>(uri);
         }
 
         public async Task<int> CreateAsync(Project project)
@@ -40,7 +42,7 @@ namespace PlateForm.Repository
 
         public async Task UpdateAsync(Project project)
         {
-            await webApiExecuter.InvokePut($"api/projects/{project.ProjectId}", project);            
+            await webApiExecuter.InvokePut($"api/projects/{project.ProjectId}", project);
         }
 
         public async Task DeleteAsync(int id)

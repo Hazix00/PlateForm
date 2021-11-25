@@ -1,16 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlateForm.DataStore.EF
 {
     public class BugsContext : DbContext
     {
-        public BugsContext(DbContextOptions options) : base(options) 
+        public BugsContext(DbContextOptions options) : base(options)
         {
         }
         public DbSet<Ticket> Tickets { get; set; }
@@ -28,7 +24,7 @@ namespace PlateForm.DataStore.EF
                 );
 
             modelBuilder.Entity<Ticket>().HasData(
-                    new Ticket { TicketId = 1, Title = "Bug #1", ProjectId = 1, DueDate = new DateTime(2021,10,17), ReportDate = new DateTime(2021, 10, 10) },
+                    new Ticket { TicketId = 1, Title = "Bug #1", ProjectId = 1, DueDate = new DateTime(2021, 10, 17), ReportDate = new DateTime(2021, 10, 10) },
                     new Ticket { TicketId = 2, Title = "Bug #2", ProjectId = 1, Description = "This is the bug number 2" },
                     new Ticket { TicketId = 3, Title = "Bug #3", ProjectId = 2 }
                 );

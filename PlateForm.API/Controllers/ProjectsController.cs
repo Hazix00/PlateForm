@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
 using PlateForm.DataStore.EF;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlateForm.API.Controllers
 {
@@ -27,7 +27,7 @@ namespace PlateForm.API.Controllers
         [HttpGet]
         public async Task<IList<Project>> GetAsync()
         {
-           return await db.Projects.ToListAsync();
+            return await db.Projects.ToListAsync();
         }
         /// <summary>
         /// Return Project by Id
@@ -66,14 +66,14 @@ namespace PlateForm.API.Controllers
         {
             db.Projects.Add(project);
             await db.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAsync).Replace("Async",""), new { id = project.ProjectId }, project);
+            return CreatedAtAction(nameof(GetAsync).Replace("Async", ""), new { id = project.ProjectId }, project);
         }
         /// <summary>
         /// Update Project
         /// </summary>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync( int id, [FromBody] Project project)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Project project)
         {
             if (id != project.ProjectId) return BadRequest();
 
@@ -110,7 +110,7 @@ namespace PlateForm.API.Controllers
             db.Projects.Remove(project);
             await db.SaveChangesAsync();
 
-            return Ok(project); 
+            return Ok(project);
         }
     }
 }

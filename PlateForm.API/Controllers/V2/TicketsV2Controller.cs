@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using PlateForm.Core.Models;
-using PlateForm.DataStore.EF;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlateForm.API.Filters.V2;
 using PlateForm.API.QueryFilters;
+using PlateForm.Core.Models;
+using PlateForm.DataStore.EF;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PlatformDemo.Controllers.V2
 {
     [ApiVersion("2.0")]
     [ApiController]
-    [Route("api/tickets")]    
+    [Route("api/tickets")]
     public class TicketsV2Controller : ControllerBase
     {
         private readonly BugsContext db;
@@ -45,7 +44,7 @@ namespace PlatformDemo.Controllers.V2
             return Ok(await tickets.ToListAsync());
         }
 
-        [HttpGet("{id}")]        
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var ticket = await db.Tickets.FindAsync(id);
@@ -57,7 +56,7 @@ namespace PlatformDemo.Controllers.V2
 
         [HttpPost]
         [Ticket_EnsureDescriptionPresentActionFilter]
-        public async Task<IActionResult> Post([FromBody]Ticket ticket)
+        public async Task<IActionResult> Post([FromBody] Ticket ticket)
         {
             db.Tickets.Add(ticket);
             await db.SaveChangesAsync();
@@ -66,7 +65,7 @@ namespace PlatformDemo.Controllers.V2
                     new { id = ticket.TicketId },
                     ticket
                 );
-        }        
+        }
 
         [HttpPut("{id}")]
         [Ticket_EnsureDescriptionPresentActionFilter]
@@ -86,11 +85,11 @@ namespace PlatformDemo.Controllers.V2
                     return NotFound();
                 throw;
             }
-            
+
             return NoContent();
         }
 
-        [HttpDelete("{id}")]        
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var ticket = await db.Tickets.FindAsync(id);

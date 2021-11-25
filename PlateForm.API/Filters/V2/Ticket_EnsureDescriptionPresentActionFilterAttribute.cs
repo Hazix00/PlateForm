@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using PlateForm.Core.Models;
 
@@ -18,7 +14,7 @@ namespace PlateForm.API.Filters.V2
             if (ticket != null && !ticket.ValidateDescription())
             {
                 context.ModelState.AddModelError("Description", "Description is required.");
-                context.Result = new BadRequestObjectResult(context.ModelState);                    
+                context.Result = new BadRequestObjectResult(context.ModelState);
             }
         }
     }

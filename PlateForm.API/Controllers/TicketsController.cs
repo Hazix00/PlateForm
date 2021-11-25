@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PlateForm.Core.Models;
 using PlateForm.DataStore.EF;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PlateForm.API.Controllers
 {
@@ -28,7 +27,7 @@ namespace PlateForm.API.Controllers
         public async Task<IList<Ticket>> GetAsync()
         {
             var tickets = await db.Tickets.ToListAsync();
-            return tickets; 
+            return tickets;
         }
         /// <summary>
         /// Return Ticket by Id
@@ -45,7 +44,7 @@ namespace PlateForm.API.Controllers
             }
             return Ok(ticket);
         }
-        
+
         /// <summary>
         /// Add new Ticket
         /// </summary>
@@ -55,7 +54,7 @@ namespace PlateForm.API.Controllers
         {
             db.Tickets.Add(ticket);
             await db.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAsync).Replace("Async",""), new { id = ticket.TicketId}, ticket);
+            return CreatedAtAction(nameof(GetAsync).Replace("Async", ""), new { id = ticket.TicketId }, ticket);
         }
         /// <summary>
         /// Update Ticket
@@ -71,7 +70,7 @@ namespace PlateForm.API.Controllers
             {
                 await db.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var existingTicket = await db.Tickets.FindAsync(id);
                 if (existingTicket == null || ex.GetType() == typeof(DbUpdateConcurrencyException))

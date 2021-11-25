@@ -10,7 +10,7 @@ namespace PlateForm.Repository
         Task DeleteAsync(int id);
         Task<IEnumerable<Project>> GetAsync();
         Task<Project> GetByIdAsync(int id);
-        Task<IEnumerable<Ticket>> GetProjectTicketsAsync(int projectId);
+        Task<IEnumerable<Ticket>> GetProjectTicketsAsync(int projectId, string filter = null);
         Task UpdateAsync(Project project);
     }
 }

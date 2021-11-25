@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PlateForm.API.QueryFilters
+﻿namespace PlateForm.API.QueryFilters
 {
-    public class TicketQueryFilter
+    public record TicketQueryFilter
     {
-        public int? Id { get; set; }
-        public string TitleOrDescription { get; set; }        
+        public int? Id { get; init; }
+        public string TitleOrDescription { get; init; }
     }
 }

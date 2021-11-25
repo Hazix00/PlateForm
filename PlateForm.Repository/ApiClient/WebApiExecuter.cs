@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PlateForm.Repository.ApiClient
@@ -34,7 +30,7 @@ namespace PlateForm.Repository.ApiClient
             await HandleError(response);
 
             return await response.Content.ReadFromJsonAsync<T>();
-        }      
+        }
 
         public async Task InvokePut<T>(string uri, T obj)
         {

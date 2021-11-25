@@ -1,0 +1,61 @@
+﻿@page "/tickets/{ticketId:int}"
+@using System.ComponentModel.DataAnnotations
+@inject ITicketsScreenUseCases ticketsScreenUseCases
+
+<h3>Ticket</h3>
+
+@if (ticket != null)
+{
+    <div class="row">
+        <div class="col-4 m-auto">
+            <EditForm EditContext="editContext">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <InputText id="title" @bind-Value="ticket.Title" class="form-control" DisplayName="Title"/>
+                </div>
+                <div class="form-group">
+                    <label for="Owner">Owner</label>
+                    <InputText id="Owner" @bind-Value="ticket.Owner" class="form-control" DisplayName="Owner"/>
+                </div>
+                <div class="form-group">
+                    <label for="Description">Description</label>
+                    <InputText id="Description" @bind-Value="ticket.Description" class="form-control" DisplayName="Description"/>
+                </div>
+                <div class="form-group">
+                    <label for="DueDate">Due Date</label>
+                    <InputDate id="DueDate" @bind-Value="ticket.DueDate" class="form-control" DisplayName="DueDate"/>
+                </div>
+                <div class="form-group">
+                    <label for="ReportDate">Report Date</label>
+                    <InputDate id="ReportDate" @bind-Value="ticket.ReportDate" class="form-control" DisplayName="ReportDate"/>
+                </div>
+                <button class="btn btn-primary btn-" @onclick=@(() => valuesUnchanged = true) disabled="@valuesUnchanged">Save changes</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int ticketId { get; set; }
+
+    Ticket ticket;
+    EditContext editContext;
+
+    bool valuesUnchanged = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ticket = await ticketsScreenUseCases.ViewTicketByIdAsync(ticketId);
+        if (ticket == null) return;
+
+        editContext = new EditContext(ticket);
+        editContext.OnFieldChanged += EditContext_FieldChanged;
+        base.OnInitialized();
+    }
+
+    private void EditContext_FieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        valuesUnchanged = false;
+    }
+}

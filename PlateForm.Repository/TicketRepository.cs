@@ -1,9 +1,6 @@
-﻿using PlateForm.Repository.ApiClient;
-using PlateForm.Core.Models;
-using System;
+﻿using PlateForm.Core.Models;
+using PlateForm.Repository.ApiClient;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PlateForm.Repository

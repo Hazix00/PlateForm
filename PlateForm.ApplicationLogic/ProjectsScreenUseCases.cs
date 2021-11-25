@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using PlateForm.Core.Models;
+using PlateForm.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PlateForm.Repository;
-using PlateForm.Core.Models;
 
 namespace PlateForm.ApplicationLogic
 {

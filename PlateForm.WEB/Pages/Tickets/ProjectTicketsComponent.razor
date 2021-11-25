@@ -16,6 +16,10 @@
             <button type="button" class="btn btn-primary">
                 <i class="fas fa-search"></i>
             </button>
+            <div class="form-check form-check-inline ml-2">
+                <input type="checkbox" class="form-check-input" id="myticket" @bind-value="ViewMyTickets"/>
+                <label class="form-check-label" for="myticket">View my tickets</label>
+            </div>
         </div>
     </div>
 </div>
@@ -36,7 +40,7 @@
           @foreach (Ticket ticket in tickets)
          {
             <tr>
-                <td>@ticket.Title</td>
+                <td><NavLink href=@($"/tickets/{ticket.TicketId}")>@ticket.Title</NavLink></td>
                 <td>@ticket.Owner</td>
                 <td>@ticket.Description</td>
                 <td>@ticket.ReportDate</td>
@@ -50,7 +54,28 @@
 @code {
     [Parameter]
     public int? projectId { get; set; }
-    public CancellationTokenSource cancelToken = new();
+    bool _viewMyTickets = false;
+    public bool ViewMyTickets { 
+        get => _viewMyTickets; 
+        set
+        {
+            _viewMyTickets = value;
+            Task.Run(async () =>
+            {
+                if (_viewMyTickets)
+                {
+
+                    tickets = await ticketsScreenUseCases.ViewOwnerTicketsAsync((int)projectId, "Hamza");
+                }
+                else
+                {
+                    tickets = await ticketsScreenUseCases.ViewTicketsAsync((int)projectId);
+                }
+                StateHasChanged();
+            });
+        }
+    }
+    CancellationTokenSource cancelToken = new();
 
     IEnumerable<Ticket> tickets;
     protected override async Task OnInitializedAsync()
@@ -61,16 +86,18 @@
     async Task Search(ChangeEventArgs eventArgs)
     {
         var filter = eventArgs.Value.ToString();
-        cancelToken.Cancel();
+        cancelToken.Cancel(); //Cancel the delay before request
 
-        if (string.IsNullOrEmpty(filter))
+        if (string.IsNullOrWhiteSpace(filter)) //if input is empty get the project tickets
         {
             tickets = await ticketsScreenUseCases.ViewTicketsAsync((int)projectId); 
             return;
         }
-        cancelToken = new();
-
+        
+        //Start a new request after 700ms
+        cancelToken = new(); 
         await Task.Delay(700, cancelToken.Token);
+
         tickets = await ticketsScreenUseCases.SearchTicketsAsync(filter);
     }
 
