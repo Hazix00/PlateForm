@@ -1,0 +1,13 @@
+﻿<div class="alert alert-danger alert-dismissible fade show @(show ? "" : "d-none")" role="alert">
+    @ErrorMessage
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" @onclick=@(() => show = false)>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+@code {
+    [Parameter]
+    public string ErrorMessage { get; set; }
+    bool show = true;
+
+}

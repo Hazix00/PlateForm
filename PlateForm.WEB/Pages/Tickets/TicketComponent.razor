@@ -1,6 +1,7 @@
 ﻿@page "/tickets/{ticketId:int}"
 @using System.ComponentModel.DataAnnotations
 @inject ITicketsScreenUseCases ticketsScreenUseCases
+@inject NavigationManager navigationManager
 
 <h3>Ticket</h3>
 
@@ -8,17 +9,23 @@
 {
     <div class="row">
         <div class="col-4 m-auto">
-            <EditForm EditContext="editContext">
+            <EditForm EditContext="editContext" OnValidSubmit="Save">
+                @if (descriptionEmpty)
+                {
+                    <AlertComponent @ref="alertComponent" ErrorMessage = "Descrition is required"></AlertComponent>
+                }
+                <DataAnnotationsValidator />
+                <ValidationSummary />
                 <div class="form-group">
-                    <label for="title">Title</label>
+                    <label for="title">Title<span style="color:red">*</span></label>
                     <InputText id="title" @bind-Value="ticket.Title" class="form-control" DisplayName="Title"/>
                 </div>
                 <div class="form-group">
                     <label for="Owner">Owner</label>
-                    <InputText id="Owner" @bind-Value="ticket.Owner" class="form-control" DisplayName="Owner"/>
+                    <InputText id="Owner" @bind-Value="ticket.Owner" class="form-control" DisplayName="Owner" readonly/>
                 </div>
                 <div class="form-group">
-                    <label for="Description">Description</label>
+                    <label for="Description">Description<span style="color:red">*</span></label>
                     <InputText id="Description" @bind-Value="ticket.Description" class="form-control" DisplayName="Description"/>
                 </div>
                 <div class="form-group">
@@ -29,10 +36,11 @@
                     <label for="ReportDate">Report Date</label>
                     <InputDate id="ReportDate" @bind-Value="ticket.ReportDate" class="form-control" DisplayName="ReportDate"/>
                 </div>
-                <button class="btn btn-primary btn-" @onclick=@(() => valuesUnchanged = true) disabled="@valuesUnchanged">Save changes</button>
+                <button type="submit" class="btn btn-primary" disabled="@valuesUnchanged">Save changes</button>
             </EditForm>
         </div>
     </div>
+
 }
 
 @code {
@@ -42,7 +50,10 @@
     Ticket ticket;
     EditContext editContext;
 
+    AlertComponent alertComponent;
+
     bool valuesUnchanged = true;
+    bool descriptionEmpty = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,4 +69,15 @@
     {
         valuesUnchanged = false;
     }
+
+    private async Task Save()
+    {
+        descriptionEmpty = !ticket.ValidateDescription();
+        StateHasChanged();
+
+        if (descriptionEmpty) return;
+        await ticketsScreenUseCases.UpdateTicketAsync(ticket);
+        navigationManager.NavigateTo($"/project/{ticket.ProjectId}/tickets");
+    }
+
 }
