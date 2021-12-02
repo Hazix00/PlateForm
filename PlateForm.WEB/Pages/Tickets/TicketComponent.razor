@@ -1,6 +1,7 @@
 ﻿@page "/tickets/{ticketId:int}"
-@using System.ComponentModel.DataAnnotations
+@page "/projects/{projectId:int}/addticket"
 @inject ITicketsScreenUseCases ticketsScreenUseCases
+@inject IProjectsScreenUseCases projectScreenUseCases
 @inject NavigationManager navigationManager
 
 <h3>Ticket</h3>
@@ -8,7 +9,7 @@
 @if (ticket != null)
 {
     <div class="row">
-        <div class="col-4 m-auto">
+        <div class="col-md-6 m-md-auto">
             <EditForm EditContext="editContext" OnValidSubmit="Save">
                 @if (descriptionEmpty)
                 {
@@ -45,7 +46,9 @@
 
 @code {
     [Parameter]
-    public int ticketId { get; set; }
+    public int? ticketId { get; set; }
+    [Parameter]
+    public int? projectId { get; set; }
 
     Ticket ticket;
     EditContext editContext;
@@ -57,8 +60,25 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ticket = await ticketsScreenUseCases.ViewTicketByIdAsync(ticketId);
-        if (ticket == null) return;
+        if (ticketId == null) // Adding new Ticket to the current Project
+        {
+            try
+            {
+                var project = await projectScreenUseCases.ViewProjecttByIdAsync((int)projectId);
+                if (project == null) throw new ArgumentNullException(); 
+                ticket = new() { ProjectId = projectId };
+            }
+            catch
+            {
+                throw new Exception("Project not Found with the provided Id!");
+            }
+
+        }
+        else if(projectId == null) // Updating existing Ticket
+        {
+            ticket = await ticketsScreenUseCases.ViewTicketByIdAsync((int)ticketId);
+            if (ticket == null) return;
+        }
 
         editContext = new EditContext(ticket);
         editContext.OnFieldChanged += EditContext_FieldChanged;
@@ -76,7 +96,14 @@
         StateHasChanged();
 
         if (descriptionEmpty) return;
-        await ticketsScreenUseCases.UpdateTicketAsync(ticket);
+        if(ticketId == null) // Adding
+        {
+            await ticketsScreenUseCases.AddTicketAsync(ticket);
+        }
+        else // Updating
+        {
+            await ticketsScreenUseCases.UpdateTicketAsync(ticket);
+        }
         navigationManager.NavigateTo($"/project/{ticket.ProjectId}/tickets");
     }
 

@@ -39,5 +39,10 @@ namespace PlateForm.ApplicationLogic
         {
             await ticketRepository.UpdateAsync(ticket);
         }
+        public async Task AddTicketAsync(Ticket ticket)
+        {
+            await ticketRepository.CreateAsync(ticket);
+        }
+
     }
 }

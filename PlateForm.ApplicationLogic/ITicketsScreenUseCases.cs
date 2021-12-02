@@ -6,6 +6,7 @@ namespace PlateForm.ApplicationLogic
 {
     public interface ITicketsScreenUseCases
     {
+        Task AddTicketAsync(Ticket ticket);
         Task<IEnumerable<Ticket>> SearchTicketsAsync(string filter);
         Task UpdateTicketAsync(Ticket ticket);
         Task<IEnumerable<Ticket>> ViewOwnerTicketsAsync(int projectId, string filter);

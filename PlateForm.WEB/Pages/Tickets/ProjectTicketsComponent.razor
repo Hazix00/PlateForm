@@ -4,12 +4,13 @@
 @using System.Threading
 
 @inject ITicketsScreenUseCases ticketsScreenUseCases
+@inject NavigationManager navigationManager
 
 <h3>@(projectId != null ? $"Project {projectId} Tasks" : "Tickets")</h3>
 
 <br />
 <div class="row">
-    <div class="offset-4 col-auto">
+    <div class="m-md-auto col-md-8">
         <div class="input-group">
             <input class="form-control" type="text" placeholder="Search"
                 aria-label="Search" @oninput="Search">
@@ -49,6 +50,7 @@
          }
       </tbody>
     </table>
+    <button class="btn btn-primary" @onclick="AddTicket">Add Ticket</button>
 }
 
 @code {
@@ -93,12 +95,16 @@
             tickets = await ticketsScreenUseCases.ViewTicketsAsync((int)projectId); 
             return;
         }
-        
+
         //Start a new request after 700ms
         cancelToken = new(); 
         await Task.Delay(700, cancelToken.Token);
 
         tickets = await ticketsScreenUseCases.SearchTicketsAsync(filter);
+    }
+    void AddTicket()
+    {
+        navigationManager.NavigateTo($"/projects/{(int)projectId}/addticket");
     }
 
 }

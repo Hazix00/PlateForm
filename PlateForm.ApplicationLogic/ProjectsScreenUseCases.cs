@@ -18,5 +18,9 @@ namespace PlateForm.ApplicationLogic
         {
             return await projectRepository.GetAsync();
         }
+        public async Task<Project> ViewProjecttByIdAsync(int projectId)
+        {
+            return await projectRepository.GetByIdAsync(projectId);
+        }
     }
 }
